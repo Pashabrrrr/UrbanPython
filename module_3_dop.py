@@ -8,6 +8,7 @@ data_structure = [
 
 def sum_args(*args):
     sum_ = 0
+
     for i in args:
         if isinstance(i, (int, float)):
             sum_ += i
