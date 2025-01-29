@@ -1,29 +1,31 @@
-import time
-from multiprocessing import Pool
+import multiprocessing
+from datetime import datetime
+
 
 def read_info(name):
+    """Читает файл построчно и сохраняет строки в локальный список"""
     all_data = []
     with open(name, 'r') as file:
         while True:
             line = file.readline()
-            if not line:
+            if not line:  # Выход при пустой строке (конец файла)
                 break
             all_data.append(line)
-    return all_data  # Этот возвращаемый список не нужен, но оставлен для полноты примера
+    # Список all_data не возвращаем для экономии памяти
+
 
 if __name__ == '__main__':
+    # 1. Подготовка списка файлов (пример для 4 файлов)
     filenames = [f'./file {number}.txt' for number in range(1, 5)]
 
-    # Линейный вызов
-    start_time = time.time()
-    for filename in filenames:
-        read_info(filename)
-    linear_time = time.time() - start_time
-    print(f"{linear_time} (линейный)")
+    # 2. Линейное выполнение (раскомментировать для теста)
+    start = datetime.now()
+    for file in filenames:
+        read_info(file)
+    print(f"Линейное время: {datetime.now() - start}")
 
-    # Многопроцессный
-    start_time = time.time()
-    with Pool() as pool:
+    # 3. Многопроцессное выполнение (раскомментировать для теста)
+    start = datetime.now()
+    with multiprocessing.Pool() as pool:
         pool.map(read_info, filenames)
-    multi_process_time = time.time() - start_time
-    print(f"{multi_process_time} (многопроцессный)")
+    print(f"Многопроцессное время: {datetime.now() - start}")
